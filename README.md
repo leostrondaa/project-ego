@@ -1,4 +1,4 @@
 # project-ego
 
-# Mateus Munhoz & Leonardo Henz
-# Info23
+Mateus Munhoz & Leonardo Henz
+Info23
