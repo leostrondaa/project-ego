@@ -24,7 +24,7 @@ export default function DataLeft() {
     <Container>
       <NavBar>
         <img src={Walter}></img>
-        <Name>Walter White</Name>
+        <Name>Walter White - Group</Name>
       </NavBar>
       <Footer>
 
