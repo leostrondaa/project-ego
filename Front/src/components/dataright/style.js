@@ -18,6 +18,7 @@ export const Input = styled.input`
   height: 50px;
   border-radius: 20px;
   border: 1px solid black;
+  padding: 10px;
 
 `;
 export const Footer = styled.div`
@@ -32,7 +33,7 @@ export const Submit = styled.button`
   height: 50px;
   border-radius: 50%;
   border: 1px solid black;
-
+  background-color:  #df61ffff;
 `;
 
 export const NavBar = styled.div`
