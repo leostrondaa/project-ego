@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import { Container } from './style';
-import FormLogin from '../../components/formlogin';
+import DataLeft from '../../components/dataleft';
+import DataRight from '../../components/dataright';
 import { Client } from '../../api/client';
 import { OrbitProgress } from 'react-loading-indicators';
 import { ThemeProvider } from 'styled-components';
@@ -26,7 +27,8 @@ export default function Home() {
         </Container>
       ) : (
         <Container>
-          <FormLogin></FormLogin>
+          <DataLeft></DataLeft>
+          <DataRight></DataRight>
         </Container>
       )}
     </ThemeProvider>
