@@ -12,9 +12,7 @@ import {
   Submit
 } from './style';
 
-const socket = io("http://10.20.21.220:3001");
-
-
+const socket = io("http://10.20.15.104:3001");
 
 
 export default function DataLeft() {
