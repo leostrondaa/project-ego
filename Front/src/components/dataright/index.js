@@ -1,35 +1,72 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { OrbitProgress } from 'react-loading-indicators';
+import { io } from 'socket.io-client';
 import UserContext from '../../contexts/UserContext';
-import { Client, setToken, testConnection } from '../../api/client';
-import { setPermissions } from '../../service/PermissionService';
-import { setDataUser } from '../../service/UserService';
-import { Container, ButtonChat, Title, Name, Text, DivData, UsersList, NavBar } from './style';
 import Walter from '../../images/walter.jpg';
-import { Input } from './style';
-import { Footer } from './style';
-import { Submit } from './style';
+import {
+  Container,
+  Name,
+  NavBar,
+  Input,
+  Footer,
+  Submit
+} from './style';
+
+const socket = io("http://localhost:3001");
 
 export default function DataLeft() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [load, setLoad] = useState(false);
-  const [hover, setHover] = useState(false);
-  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
   const { setUser } = useContext(UserContext);
-  useEffect(() => { }, []);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    return () => {
+      socket.off("receive_message");
+    };
+  }, []);
+
+  const sendMessage = () => {
+    if (message.trim() === "") return;
+
+    const msgData = {
+      text: message,
+      time: new Date().toLocaleTimeString()
+    };
+
+    socket.emit("send_message", msgData);
+    setMessage('');
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") sendMessage();
+  };
 
   return (
     <Container>
       <NavBar>
-        <img src={Walter}></img>
+        <img src={Walter} alt="Walter White" />
         <Name>Walter White - Group</Name>
       </NavBar>
+
+      <ul >
+        {messages.map((msg, index) => (
+          <li key={index}>{msg.text} <small>({msg.time})</small></li>
+        ))}
+      </ul>
+
       <Footer>
-
-
-      <Input></Input><Submit></Submit>
+        <Input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="Digite sua mensagem..."
+        />
+        <Submit onClick={sendMessage}>Enviar</Submit>
       </Footer>
     </Container>
   );
