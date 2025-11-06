@@ -15,8 +15,8 @@ class App {
     this.httpServer = http.createServer(this.app);
     this.io = new Server(this.httpServer, {
       cors: {
-        origin: "http://localhost:8010",
-        methods: ["GET", "POST"],
+        origin: "http://10.20.21.220:8010", 
+        methods: ["GET", "POST"]
       },
     });
 
@@ -25,21 +25,21 @@ class App {
 
   private listenSocket() {
     this.io.on("connection", (socket) => {
-  console.log("Usuário conectado: ", socket.id);
+      console.log("Usuário conectado: ", socket.id);
 
-  socket.on("send_message", (data) => {
-    console.log("Mensagem recebida:", data);
-    this.io.emit("receive_message", data);
-  });
+      socket.on("send_message", (data) => {
+        console.log("Mensagem recebida:", data);
+        this.io.emit("receive_message", data);
+      });
 
-  socket.on("disconnect", () => {
-    console.log("Usuário desconectado", socket.id);
-  });
-});
+      socket.on("disconnect", () => {
+        console.log("Usuário desconectado", socket.id);
+      });
+    });
   }
 
   public listenServer() {
-    const PORT = 3001; 
+    const PORT = 3001;
     this.httpServer.listen(PORT, () =>
       console.log(`Servidor rodando na porta ${PORT}`)
     );

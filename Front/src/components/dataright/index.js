@@ -12,7 +12,8 @@ import {
   Submit
 } from './style';
 
-const socket = io("http://localhost:3001");
+const socket = io("http://10.20.21.220:3001");
+
 
 export default function DataLeft() {
   const [message, setMessage] = useState('');
@@ -66,7 +67,7 @@ export default function DataLeft() {
           onKeyDown={handleKeyPress}
           placeholder="Digite sua mensagem..."
         />
-        <Submit onClick={sendMessage}>Enviar</Submit>
+        <Submit onClick={sendMessage}>E</Submit>
       </Footer>
     </Container>
   );
