@@ -27,8 +27,18 @@ export default function DataRight() {
     return () => socket.off("receive_message");
   }, []);
 
+
+  useEffect(() => {
+    if (user?.messages) {
+      setMessages(user.messages);
+    } else {
+      setMessages([]);
+    }
+  }, [user]);
+
   const sendMessage = () => {
     if (message.trim() === "") return;
+
     const msgData = {
       text: message,
       time: new Date().toLocaleTimeString(),
@@ -63,22 +73,3 @@ export default function DataRight() {
     </Container>
   );
 }
-
-/*const sendMessage = () => {
-  if (message.trim() === "") return;
-
-  const msgData = {
-    text: message,
-    time: new Date().toLocaleTimeString(),
-  };
-
-  // 👇 adiciona no estado local
-  setMessages((prev) => [...prev, msgData]);
-
-  // envia pro servidor
-  socket.emit("send_message", msgData);
-
-  // limpa o input
-  setMessage("");
-};
-*/
