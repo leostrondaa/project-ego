@@ -12,14 +12,14 @@ class App {
     this.app = express();
 
     this.app.use(cors({
-       origin: "http://localhost:3000",
-       methods: ["GET", "POST"],
+      origin: "*",
+      methods: ["GET", "POST"],
     }));
 
     this.httpServer = http.createServer(this.app);
     this.io = new Server(this.httpServer, {
       cors: {
-        origin: "http://localhost:3000",
+        origin: "*",
         methods: ["GET", "POST"],
       },
     });
@@ -29,24 +29,26 @@ class App {
 
   private listenSocket() {
     this.io.on("connection", (socket) => {
-  console.log("Usuário conectado: ", socket.id);
+      console.log("Usuário conectado: ", socket.id);
 
-  socket.on("send_message", (data) => {
-    console.log("Mensagem recebida:", data);
-    this.io.emit("receive_message", data);
-  });
+      socket.on("send_message", (data) => {
+        console.log("Mensagem recebida:", data);
+        this.io.emit("receive_message", data);
+      });
 
-  socket.on("disconnect", () => {
-    console.log("Usuário desconectado", socket.id);
-  });
-});
+      socket.on("disconnect", () => {
+        console.log("Usuário desconectado", socket.id);
+      });
+    });
   }
 
   public listenServer() {
-    const PORT = 3001; 
-    this.httpServer.listen(PORT, () =>
+    const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
+    this.httpServer.listen(PORT, '0.0.0.0', () =>
       console.log(`Servidor rodando na porta ${PORT}`)
     );
+
+
   }
 }
 

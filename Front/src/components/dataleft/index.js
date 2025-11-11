@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Pix from "../../images/walter.jpg";
+import Walter from "../../images/walter.jpg";
+import Jessie from "../../images/jessie.jpg";
+import Jane from "../../images/jane.jpg";
 import {
   Container,
   ButtonChat,
@@ -18,14 +20,15 @@ export default function DataLeft() {
     {
     id: 1,
     name: "Walter White",
-    image: Pix,
+    text: "I hate comunism",
+    image: Walter,
     messages: [
       { id: 1, text: "Say my name", time: "10:00" },
       { id: 2, text: "You're goddamn right", time: "10:05" },
     ],
   },
-    { id: 2, name: "Jessie Pinkman", text: "rosinha", image: Pix },
-    { id: 3, name: "Jane Margolis", text: "tô confusa", image: Pix },
+    { id: 2, name: "Jessie Pinkman", text: "rosinha", image: Jessie },
+    { id: 3, name: "Jane Margolis", text: "tô confusa", image: Jane },
   ];
   
 

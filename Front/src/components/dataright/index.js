@@ -51,7 +51,7 @@ export default function DataRight() {
     <Container>
       <NavBar>
         <img src={user?.image || Walter} alt={user?.name || "Chat"} />
-        <Name>{user?.name || "Desconhecido"} - Chat</Name>
+        <Name>{user?.name || "Desconhecido"} - Group</Name>
       </NavBar>
 
       <ul>
