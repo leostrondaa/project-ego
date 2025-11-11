@@ -19,6 +19,7 @@ export default function DataLeft() {
     { id: 2, name: "Jessie Pinkman", text: "rosinha", image: Pix },
     { id: 3, name: "Jane Margolis", text: "tô confusa", image: Pix },
   ];
+  
 
   const openChat = (user) => {
     navigate("/home", { state: { user } });
