@@ -25,6 +25,14 @@
             backdrop-filter: blur(10px);
         }
 
+        #input {
+            flex-grow: 1;
+            border: none;
+            padding: 0 1rem;
+            font-size: 1rem;
+            border-radius: 2rem;
+        }
+
         #input:focus {
             outline: none;
         }
@@ -55,10 +63,32 @@
 </head>
 
 <body>
-    <ul id="messages"></ul>
+    <ul id="messages">
+        <li>Texto</li>
+    </ul>
     <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
+        <input id="input" autocomplete="off" type="submit"/><button>Send</button>
     </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        const message = document.getElementById('messages');
+        const input = document.getElementById('input');
+
+        document.addEventListener('submit', (e) =>{
+            e.preventDefault();
+            if(input.value){
+                socket.emit('message', input.value);
+            }
+        });
+
+        socket.on('message', function (msg) {
+            const item = document.createElement('li');
+            li.textContent = msg;
+            message.appendChild(li);
+        });
+    </script>
 </body>
 
 </html>

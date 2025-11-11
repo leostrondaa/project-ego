@@ -11,15 +11,25 @@ class App {
         this.app = express();
         this.http = http.createServer(this.app);
         this.io = new Server(this.http);
-        this.linstenSocket();
+        this.lintenSocket();
+        this.setupRoutes();
     }
     listenServer() {
         this.http.listen(3000, () => console.log("Server is running"));
     }
-    linstenSocket() {
+    lintenSocket() {
         this.io.on("connection", (socket) => {
             console.log("User connected:", socket.id);
+
+            socket.on("message", (msg)=> {
+                this.io.emit("message", msg);
+            });
         });
+    }
+    setupRoutes() {
+        this.app.get("/", (req, res)=>{
+            res.sendFile(__dirname + "/index.html");
+        })
     }
 }
 
