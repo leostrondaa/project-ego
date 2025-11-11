@@ -1,62 +1,54 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { io } from 'socket.io-client';
-import UserContext from '../../contexts/UserContext';
-import Walter from '../../images/walter.jpg';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { io } from "socket.io-client";
+import Walter from "../../images/walter.jpg";
 import {
   Container,
   Name,
   NavBar,
   Input,
   Footer,
-  Submit
-} from './style';
+  Submit,
+} from "./style";
 
 const socket = io("http://10.20.15.104:3001");
 
+export default function DataRight() {
+  const location = useLocation();
+  const { user } = location.state || {};
 
-export default function DataLeft() {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const { setUser } = useContext(UserContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
     });
-
-    return () => {
-      socket.off("receive_message");
-    };
+    return () => socket.off("receive_message");
   }, []);
 
   const sendMessage = () => {
     if (message.trim() === "") return;
-
     const msgData = {
       text: message,
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleTimeString(),
     };
-
     socket.emit("send_message", msgData);
-    setMessage('');
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") sendMessage();
+    setMessage("");
   };
 
   return (
     <Container>
       <NavBar>
-        <img src={Walter} alt="Walter White" />
-        <Name>Walter White - Group</Name>
+        <img src={user?.image || Walter} alt={user?.name || "Chat"} />
+        <Name>{user?.name || "Desconhecido"} - Chat</Name>
       </NavBar>
 
-      <ul >
+      <ul>
         {messages.map((msg, index) => (
-          <li key={index}>{msg.text} <small>({msg.time})</small></li>
+          <li key={index}>
+            {msg.text} <small>({msg.time})</small>
+          </li>
         ))}
       </ul>
 
@@ -64,11 +56,29 @@ export default function DataLeft() {
         <Input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
           placeholder="Digite sua mensagem..."
         />
-        <Submit onClick={sendMessage}>E</Submit>
+        <Submit onClick={sendMessage}>Enviar</Submit>
       </Footer>
     </Container>
   );
 }
+
+/*const sendMessage = () => {
+  if (message.trim() === "") return;
+
+  const msgData = {
+    text: message,
+    time: new Date().toLocaleTimeString(),
+  };
+
+  // 👇 adiciona no estado local
+  setMessages((prev) => [...prev, msgData]);
+
+  // envia pro servidor
+  socket.emit("send_message", msgData);
+
+  // limpa o input
+  setMessage("");
+};
+*/
