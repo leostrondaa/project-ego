@@ -15,7 +15,15 @@ export default function DataLeft() {
   const navigate = useNavigate();
 
   const users = [
-    { id: 1, name: "Walter White", text: "toma 10 compra lá teu pó", image: Pix },
+    {
+    id: 1,
+    name: "Walter White",
+    image: Pix,
+    messages: [
+      { id: 1, text: "Say my name", time: "10:00" },
+      { id: 2, text: "You're goddamn right", time: "10:05" },
+    ],
+  },
     { id: 2, name: "Jessie Pinkman", text: "rosinha", image: Pix },
     { id: 3, name: "Jane Margolis", text: "tô confusa", image: Pix },
   ];
