@@ -2,14 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import Walter from "../../images/walter.jpg";
-import {
-  Container,
-  Name,
-  NavBar,
-  Input,
-  Footer,
-  Submit,
-} from "./style";
+import { Container, Name, NavBar, Input, Footer, Submit } from "./style";
 
 const socket = io("http://localhost:3001");
 
@@ -21,13 +14,13 @@ export default function DataRight() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    
     socket.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
     });
     return () => socket.off("receive_message");
   }, []);
-
-
+  
   useEffect(() => {
     if (user?.messages) {
       setMessages(user.messages);
@@ -49,27 +42,33 @@ export default function DataRight() {
 
   return (
     <Container>
-      <NavBar>
-        <img src={user?.image || Walter} alt={user?.name || "Chat"} />
-        <Name>{user?.name || "Desconhecido"} - Group</Name>
-      </NavBar>
+      {user ? (
+        <>
+          <NavBar>
+            <img src={user?.image} alt={user?.name} />
+            <Name>{user?.name} - Group</Name>
+          </NavBar>
 
-      <ul>
-        {messages.map((msg, index) => (
-          <li key={index}>
-            {msg.text} <small>({msg.time})</small>
-          </li>
-        ))}
-      </ul>
+          <ul>
+            {messages.map((msg, index) => (
+              <li key={index}>
+                {msg.text} <small>({msg.time})</small>
+              </li>
+            ))}
+          </ul>
 
-      <Footer>
-        <Input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Digite sua mensagem..."
-        />
-        <Submit onClick={sendMessage}>Enviar</Submit>
-      </Footer>
+          <Footer>
+            <Input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Digite sua mensagem..."
+            />
+            <Submit onClick={sendMessage}>Enviar</Submit>
+          </Footer>
+        </>
+      ) : (
+        ""
+      )}
     </Container>
   );
 }
