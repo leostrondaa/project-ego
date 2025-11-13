@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import Walter from "../../images/walter.jpg";
-import { Container, Name, NavBar, Input, Footer, Submit } from "./style";
+import { Container,UsersList, Name, NavBar, Input, Footer, Submit, Msg, Void } from "./style";
+
 
 const socket = io("http://localhost:3001");
 
@@ -14,13 +15,12 @@ export default function DataRight() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    
     socket.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
     });
     return () => socket.off("receive_message");
   }, []);
-  
+
   useEffect(() => {
     if (user?.messages) {
       setMessages(user.messages);
@@ -49,21 +49,25 @@ export default function DataRight() {
             <Name>{user?.name} - Group</Name>
           </NavBar>
 
-          <ul>
-            {messages.map((msg, index) => (
-              <li key={index}>
-                {msg.text} <small>({msg.time})</small>
-              </li>
-            ))}
-          </ul>
+          {messages.length === 0 ? (
+            <span>Nenhuma mensagem ainda.</span>
+          ) : (
+            <UsersList>
+              {messages.map((msg, index) => (
+                <Msg key={index}>
+                  {msg.text} <small>({msg.time})</small>
+                </Msg>
+              ))}
+            </UsersList>
+          )}
 
           <Footer>
             <Input
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Digite sua mensagem..."
+              placeholder="Mensagem"
             />
-            <Submit onClick={sendMessage}>Enviar</Submit>
+            <Submit onClick={sendMessage}>➤</Submit>
           </Footer>
         </>
       ) : (
